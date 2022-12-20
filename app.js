@@ -14,7 +14,6 @@ app.get('/', function (req, res) {
 });
 
 app.post("/", function(req, res) {
-  console.log(req.body.cityName);
 
   const query = req.body.cityName;
   const appKey = process.env.appKey;
@@ -26,17 +25,14 @@ app.post("/", function(req, res) {
     response.on("data", function(data) {
       const weatherData = JSON.parse(data);
       const code = response.statusCode;
-      const message = weatherData.message;
       if (code === 200) {
         const temp = weatherData.main.temp;
         const feelsLikeTemp = weatherData.main.feels_like
         const city = weatherData.name;
         const clouds = weatherData.weather[0].description;
-        const icon = weatherData.weather[0].icon;
-        const iconUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
         let weatherResult = "The temperature in " + city + " is " + temp + "°C, feels like " + feelsLikeTemp + "°C, " + clouds +  ".";
         console.log(weatherResult);
-        res.render("result", {newWeatherResult: weatherResult, newIcon: iconUrl})
+        res.render("result", {newWeatherResult: weatherResult})
             } else {
         res.render("result", {newWeatherResult: "This city doesn't exist =(("});
       }
